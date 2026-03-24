@@ -1,8 +1,43 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import AppLayout from './layouts/AppLayout'
+import AuthLayout from './layouts/AuthLayout'
+import Dashboard from './pages/Dashboard'
+import AIAgents from './pages/AIAgents'
+import Conversations from './pages/Conversations'
+import ContentLibrary from './pages/ContentLibrary'
+import Analytics from './pages/Analytics'
+import Billing from './pages/Billing'
+import Settings from './pages/Settings'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
+import ForgotPassword from './pages/ForgotPassword'
+
 function App() {
   return (
-    <div style={{ padding: 'var(--spacing-8)' }}>
-      <h1 style={{ color: 'var(--text-primary)' }}>CrafterTech AI Platform</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        {/* App routes */}
+        <Route element={<AppLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/agents" element={<AIAgents />} />
+          <Route path="/conversations" element={<Conversations />} />
+          <Route path="/content" element={<ContentLibrary />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/billing" element={<Billing />} />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
+
+        {/* Auth routes */}
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+        </Route>
+
+        {/* Redirect root to dashboard */}
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
