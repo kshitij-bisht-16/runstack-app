@@ -1,32 +1,33 @@
 import { useLocation, useNavigate } from 'react-router-dom'
+import Icon, { type IconName } from './Icon'
 
 interface NavItem {
   label: string
   path: string
-  icon: string
+  icon: IconName
 }
 
 const sections: { title: string; items: NavItem[] }[] = [
   {
     title: 'WORKSPACE',
     items: [
-      { label: 'Dashboard', path: '/dashboard', icon: '⊞' },
-      { label: 'AI Agents', path: '/agents', icon: '🤖' },
-      { label: 'Conversations', path: '/conversations', icon: '💬' },
-      { label: 'Content Library', path: '/content', icon: '📁' },
+      { label: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
+      { label: 'AI Agents', path: '/agents', icon: 'smart_toy' },
+      { label: 'Conversations', path: '/conversations', icon: 'chat' },
+      { label: 'Content Library', path: '/content', icon: 'folder' },
     ],
   },
   {
     title: 'INSIGHTS',
     items: [
-      { label: 'Analytics', path: '/analytics', icon: '📊' },
-      { label: 'Billing', path: '/billing', icon: '🧾' },
+      { label: 'Analytics', path: '/analytics', icon: 'bar_chart' },
+      { label: 'Billing', path: '/billing', icon: 'receipt' },
     ],
   },
   {
     title: 'ACCOUNT',
     items: [
-      { label: 'Settings', path: '/settings', icon: '⚙️' },
+      { label: 'Settings', path: '/settings', icon: 'settings' },
     ],
   },
 ]
@@ -133,7 +134,7 @@ export default function Sidebar() {
                   if (!active) e.currentTarget.style.background = 'transparent'
                 }}
               >
-                <span style={{ fontSize: '14px', width: '16px', textAlign: 'center' }}>{item.icon}</span>
+                <Icon name={item.icon} size={16} color={active ? 'var(--text-primary)' : '#8C8C8C'} />
                 {item.label}
               </button>
             )
