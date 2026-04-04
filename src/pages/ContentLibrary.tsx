@@ -219,45 +219,99 @@ export default function ContentLibrary() {
 
       {/* ── Brand Context Tab ── */}
       {activeTab === 'brand' && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
           {brandCards.map((card) => (
             <div
               key={card.id}
-              onClick={() => navigate(`/content/brand/${card.id}`)}
               style={{
-                width: '560px',
                 background: 'var(--bg-surface)',
                 border: '1px solid var(--border-subtle)',
-                borderRadius: 'var(--radius-lg)',
+                borderRadius: 'var(--radius-xl)',
                 padding: '20px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '12px',
+                gap: '0',
                 cursor: 'pointer',
                 transition: 'border-color 0.15s',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--border-default)' }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)' }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '11px', fontWeight: 600, color: card.categoryColor, fontFamily: "'Sora', sans-serif" }}>
-                  {card.category}
+              {/* Content area */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
+                {/* Meta row */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{
+                    display: 'inline-flex', alignItems: 'center',
+                    height: '22px', padding: '0 8px', borderRadius: 'var(--radius-full)',
+                    fontSize: '10px', fontWeight: 700, fontFamily: "'Sora', sans-serif",
+                    color: card.categoryColor,
+                    background: `${card.categoryColor}1F`,
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {card.category}
+                  </span>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>{card.files}</span>
+                    <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>{card.date}</span>
+                  </div>
+                </div>
+                {/* Title */}
+                <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>
+                  {card.title}
                 </span>
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>{card.files}</span>
-                  <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>{card.date}</span>
+                {/* Description */}
+                <span style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif" }}>
+                  {card.desc}
+                </span>
+                {/* Tags */}
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  {card.tags.map((tag) => (
+                    <span key={tag} style={{
+                      display: 'inline-flex', alignItems: 'center',
+                      height: '17px', padding: '0 8px', borderRadius: 'var(--radius-sm)',
+                      background: 'var(--bg-elevated)',
+                      fontSize: '10px', fontWeight: 500, color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif",
+                    }}>
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
-              <span style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>
-                {card.title}
-              </span>
-              <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
-                {card.desc}
-              </span>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                {card.tags.map((tag) => (
-                  <Tag key={tag}>{tag}</Tag>
-                ))}
+
+              {/* Action shelf */}
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                marginTop: '20px', padding: '12px 20px',
+                background: 'var(--bg-base)', border: '1px solid var(--border-subtle)',
+                borderRadius: 'var(--radius-md)',
+              }}>
+                <button
+                  onClick={(e) => { e.stopPropagation(); navigate(`/content/brand/${card.id}`) }}
+                  style={{
+                    background: 'transparent', border: 'none', cursor: 'pointer',
+                    color: 'var(--brand-accent)', fontSize: '13px', fontWeight: 600, fontFamily: "'Sora', sans-serif",
+                    display: 'flex', alignItems: 'center', gap: '2px',
+                  }}
+                >
+                  View Details →
+                </button>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <button style={{
+                    width: '28px', height: '28px', borderRadius: 'var(--radius-sm)',
+                    background: 'transparent', border: 'none', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <Icon name="edit" size={16} color="var(--text-tertiary)" />
+                  </button>
+                  <button style={{
+                    width: '28px', height: '28px', borderRadius: 'var(--radius-sm)',
+                    background: 'transparent', border: 'none', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <Icon name="delete" size={16} color="var(--text-tertiary)" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -266,24 +320,24 @@ export default function ContentLibrary() {
           <div
             onClick={() => setModal('add')}
             style={{
-              width: '560px',
-              height: '196px',
-              background: 'var(--bg-base)',
+              background: 'transparent',
               border: '1px dashed var(--border-default)',
-              borderRadius: 'var(--radius-lg)',
+              borderRadius: 'var(--radius-xl)',
+              padding: '20px',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '10px',
+              gap: '8px',
               cursor: 'pointer',
+              minHeight: '266px',
             }}
           >
-            <span style={{ fontSize: '32px', fontWeight: 700, color: 'var(--text-disabled)', fontFamily: "'Sora', sans-serif" }}>+</span>
-            <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
+            <span style={{ fontSize: '26px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>+</span>
+            <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif" }}>
               Add Brand Context
             </span>
-            <span style={{ fontSize: '12px', color: 'var(--text-disabled)', fontFamily: "'Sora', sans-serif" }}>
+            <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
               Upload files, add URLs or paste text
             </span>
           </div>
@@ -292,86 +346,115 @@ export default function ContentLibrary() {
 
       {/* ── Generated Content Tab ── */}
       {activeTab === 'generated' && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
           {generatedCards.map((card) => (
             <div
               key={card.id}
               style={{
-                width: '560px',
                 background: 'var(--bg-surface)',
                 border: '1px solid var(--border-subtle)',
-                borderRadius: 'var(--radius-lg)',
+                borderRadius: 'var(--radius-xl)',
                 padding: '20px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '12px',
+                gap: '0',
                 cursor: 'pointer',
                 transition: 'border-color 0.15s',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--border-default)' }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)' }}
             >
-              {/* Meta row */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                <Badge>{card.contentType}</Badge>
-                <span style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '4px',
-                  height: '24px', padding: '0 10px', borderRadius: 'var(--radius-full)',
-                  fontSize: '11px', fontWeight: 600, fontFamily: "'Sora', sans-serif",
-                  color: card.agentColor,
-                  background: `${card.agentColor}1F`,
-                }}>
-                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: card.agentColor }} />
-                  {card.agent}
+              {/* Content area */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
+                {/* Meta row */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{
+                    display: 'inline-flex', alignItems: 'center',
+                    height: '22px', padding: '0 8px', borderRadius: 'var(--radius-full)',
+                    fontSize: '10px', fontWeight: 700, fontFamily: "'Sora', sans-serif",
+                    color: 'var(--text-secondary)', background: 'var(--bg-elevated)',
+                  }}>
+                    {card.contentType}
+                  </span>
+                  <span style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '4px',
+                    height: '22px', padding: '0 8px', borderRadius: 'var(--radius-full)',
+                    fontSize: '10px', fontWeight: 700, fontFamily: "'Sora', sans-serif",
+                    color: card.agentColor,
+                    background: `${card.agentColor}1F`,
+                  }}>
+                    <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: card.agentColor }} />
+                    {card.agent}
+                  </span>
+                  <span style={{ marginLeft: 'auto', fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
+                    {card.date}
+                  </span>
+                  <span style={{
+                    display: 'inline-flex', alignItems: 'center',
+                    height: '22px', padding: '0 8px', borderRadius: 'var(--radius-full)',
+                    fontSize: '10px', fontWeight: 700, fontFamily: "'Sora', sans-serif",
+                    background: statusColors[card.status].bg,
+                    color: statusColors[card.status].color,
+                  }}>
+                    {card.status}
+                  </span>
+                </div>
+                {/* Title */}
+                <span style={{ fontSize: '15px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>
+                  {card.title}
                 </span>
-                <span style={{ marginLeft: 'auto', fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
-                  {card.date}
+                {/* Description */}
+                <span style={{ fontSize: '13px', lineHeight: '18px', color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif" }}>
+                  {card.desc}
                 </span>
-                <span style={{
-                  display: 'inline-flex', alignItems: 'center',
-                  height: '24px', padding: '0 10px', borderRadius: 'var(--radius-full)',
-                  fontSize: '11px', fontWeight: 600, fontFamily: "'Sora', sans-serif",
-                  background: statusColors[card.status].bg,
-                  color: statusColors[card.status].color,
-                }}>
-                  {card.status}
-                </span>
+                {/* Tags + variants */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  {card.tags.map((tag) => (
+                    <span key={tag} style={{
+                      display: 'inline-flex', alignItems: 'center',
+                      height: '17px', padding: '0 8px', borderRadius: 'var(--radius-sm)',
+                      background: 'var(--bg-elevated)',
+                      fontSize: '10px', fontWeight: 500, color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif",
+                    }}>
+                      {tag}
+                    </span>
+                  ))}
+                  <span style={{ marginLeft: 'auto', fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
+                    {card.variants} variant{card.variants !== 1 ? 's' : ''}
+                  </span>
+                </div>
               </div>
 
-              {/* Title + desc */}
-              <span style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>
-                {card.title}
-              </span>
-              <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
-                {card.desc}
-              </span>
-
-              {/* Tags + variants */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                {card.tags.map((tag) => (
-                  <Tag key={tag}>{tag}</Tag>
-                ))}
-                <span style={{ marginLeft: 'auto', fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
-                  {card.variants} variant{card.variants !== 1 ? 's' : ''}
-                </span>
-              </div>
-
-              {/* Actions */}
-              <div style={{ display: 'flex', alignItems: 'center', borderTop: '1px solid var(--border-subtle)', paddingTop: '12px' }}>
+              {/* Action shelf */}
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                marginTop: '20px', padding: '12px 20px',
+                background: 'var(--bg-base)', border: '1px solid var(--border-subtle)',
+                borderRadius: 'var(--radius-md)',
+              }}>
                 <button
                   onClick={(e) => { e.stopPropagation(); navigate(`/content/generated/${card.id}`) }}
                   style={{
-                    background: 'transparent', border: 'none', color: 'var(--brand-accent-text-light)',
-                    fontSize: '12px', fontWeight: 600, fontFamily: "'Sora', sans-serif", cursor: 'pointer',
+                    background: 'transparent', border: 'none', cursor: 'pointer',
+                    color: 'var(--brand-accent)', fontSize: '13px', fontWeight: 600, fontFamily: "'Sora', sans-serif",
+                    display: 'flex', alignItems: 'center', gap: '2px',
                   }}
                 >
                   View Details →
                 </button>
-                <div style={{ marginLeft: 'auto', display: 'flex', gap: '8px' }}>
-                  <button style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px' }}>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <button style={{
+                    width: '28px', height: '28px', borderRadius: 'var(--radius-sm)',
+                    background: 'transparent', border: 'none', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
                     <Icon name="edit" size={16} color="var(--text-tertiary)" />
                   </button>
-                  <button style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px' }}>
+                  <button style={{
+                    width: '28px', height: '28px', borderRadius: 'var(--radius-sm)',
+                    background: 'transparent', border: 'none', cursor: 'pointer',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
                     <Icon name="delete" size={16} color="var(--text-tertiary)" />
                   </button>
                 </div>
@@ -379,27 +462,28 @@ export default function ContentLibrary() {
             </div>
           ))}
 
-          {/* Add card (dashed) */}
+          {/* Add card */}
           <div
+            onClick={() => setModal('add')}
             style={{
-              width: '560px',
-              height: '260px',
-              background: 'var(--bg-base)',
+              background: 'transparent',
               border: '1px dashed var(--border-default)',
-              borderRadius: 'var(--radius-lg)',
+              borderRadius: 'var(--radius-xl)',
+              padding: '20px',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '10px',
+              gap: '8px',
               cursor: 'pointer',
+              minHeight: '266px',
             }}
           >
-            <span style={{ fontSize: '32px', fontWeight: 700, color: 'var(--text-disabled)', fontFamily: "'Sora', sans-serif" }}>+</span>
-            <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
+            <span style={{ fontSize: '26px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>+</span>
+            <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif" }}>
               Generate New Content
             </span>
-            <span style={{ fontSize: '12px', color: 'var(--text-disabled)', fontFamily: "'Sora', sans-serif" }}>
+            <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
               Start a conversation with an AI agent
             </span>
           </div>
