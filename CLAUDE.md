@@ -114,10 +114,13 @@ src/
 | brand/accent | `--brand-accent` | `#6366F1` | Primary brand — buttons, active states |
 | brand/accent-light | `--brand-accent-light` | `#818CF8` | Lighter variant — decorative on dark bg |
 | brand/accent-dark | `--brand-accent-dark` | `#4F46E5` | Stronger — pressed/bold use on light bg |
-| brand/accent-bg-subtle | `--brand-accent-bg-subtle` | `#6366F11F` | Active nav, selected state |
-| brand/accent-bg-muted | `--brand-accent-bg-muted` | `#6366F10F` | Hover states |
-| brand/accent-border | `--brand-accent-border` | `#6366F166` | Focus ring, active card border |
-| brand/accent-border-strong | `--brand-accent-border-strong` | `#6366F1CC` | Highlighted component border |
+| brand/accent-bg-subtle | `--brand-accent-bg-subtle` | `#6366F1` | Active nav, selected state |
+| brand/accent-bg-muted | `--brand-accent-bg-muted` | `#6366F1` | Hover states |
+| brand/accent-border | `--brand-accent-border` | `#6366F1` | Focus ring, active card border |
+| brand/accent-border-strong | `--brand-accent-border-strong` | `#6366F1` | Highlighted component border |
+| brand/accent-text | `--brand-accent-text` | `#6366F1` | Brand-colored text |
+| brand/accent-text-strong | `--brand-accent-text-strong` | `#6366F1` | Strong brand text |
+| brand/accent-text-light | `--brand-accent-text-light` | `#A5B4FC` | Light brand text on dark bg |
 
 ### Semantic
 | Token | CSS Variable | Hex |
@@ -199,10 +202,13 @@ src/
   --brand-accent:               #6366F1;
   --brand-accent-light:         #818CF8;
   --brand-accent-dark:          #4F46E5;
-  --brand-accent-bg-subtle:     #6366F11F;
-  --brand-accent-bg-muted:      #6366F10F;
-  --brand-accent-border:        #6366F166;
-  --brand-accent-border-strong: #6366F1CC;
+  --brand-accent-bg-subtle:     #6366F1;
+  --brand-accent-bg-muted:      #6366F1;
+  --brand-accent-border:        #6366F1;
+  --brand-accent-border-strong: #6366F1;
+  --brand-accent-text:          #6366F1;
+  --brand-accent-text-strong:   #6366F1;
+  --brand-accent-text-light:    #A5B4FC;
 
   /* Semantic */
   --success:        #4ADE80;

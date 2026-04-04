@@ -23,10 +23,13 @@
   --brand-accent:               #6366F1;
   --brand-accent-light:         #818CF8;
   --brand-accent-dark:          #4F46E5;
-  --brand-accent-bg-subtle:     #6366F11F;
-  --brand-accent-bg-muted:      #6366F10F;
-  --brand-accent-border:        #6366F166;
-  --brand-accent-border-strong: #6366F1CC;
+  --brand-accent-bg-subtle:     #6366F1;
+  --brand-accent-bg-muted:      #6366F1;
+  --brand-accent-border:        #6366F1;
+  --brand-accent-border-strong: #6366F1;
+  --brand-accent-text:          #6366F1;
+  --brand-accent-text-strong:   #6366F1;
+  --brand-accent-text-light:    #A5B4FC;
 
   /* Semantic */
   --success:        #4ADE80;

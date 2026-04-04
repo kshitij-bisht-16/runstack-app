@@ -1,7 +1,7 @@
 interface AgentCardProps {
   name: string
   role: string
-  status: 'active' | 'inactive'
+  status: 'active' | 'inactive' | 'working' | 'idle'
   provider: string
   color: string
   icon?: React.ReactNode
@@ -13,7 +13,7 @@ export default function AgentCard({ name, role, status, provider, color }: Agent
   return (
     <div
       style={{
-        width: '200px',
+        width: '100%',
         height: '180px',
         background: 'var(--bg-surface)',
         border: '1px solid var(--border-subtle)',
@@ -96,7 +96,7 @@ export default function AgentCard({ name, role, status, provider, color }: Agent
               width: '6px',
               height: '6px',
               borderRadius: '50%',
-              background: status === 'active' ? 'var(--success)' : 'var(--text-tertiary)',
+              background: status === 'active' || status === 'working' ? 'var(--success)' : 'var(--text-tertiary)',
             }}
           />
           <span
@@ -108,7 +108,7 @@ export default function AgentCard({ name, role, status, provider, color }: Agent
               fontFamily: "'Sora', sans-serif",
             }}
           >
-            {status === 'active' ? 'Active' : 'Inactive'}
+            {status === 'active' ? 'Active' : status === 'working' ? 'Working' : status === 'idle' ? 'Idle' : 'Inactive'}
           </span>
         </div>
 

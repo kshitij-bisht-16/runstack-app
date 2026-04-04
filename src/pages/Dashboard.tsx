@@ -1,5 +1,6 @@
 import Button from '../components/Button'
 import AgentCard from '../components/AgentCard'
+import Icon from '../components/Icon'
 
 const statCards = [
   { label: 'AI CREDITS', value: '1,247', change: '↑ 12% from last month', changeColor: 'var(--success)' },
@@ -10,8 +11,8 @@ const statCards = [
 
 const agents = [
   { name: 'Spark', role: 'Social Media Expert', status: 'active' as const, provider: 'Claude', color: 'var(--agent-spark)' },
-  { name: 'Pixel', role: 'Copywriter', status: 'active' as const, provider: 'OpenAI', color: 'var(--agent-pixel)' },
-  { name: 'Nova', role: 'Graphic Designer', status: 'inactive' as const, provider: 'Gemini', color: 'var(--agent-nova)' },
+  { name: 'Pixel', role: 'Copywriter', status: 'working' as const, provider: 'OpenAI', color: 'var(--agent-pixel)' },
+  { name: 'Nova', role: 'Graphic Designer', status: 'idle' as const, provider: 'Gemini', color: 'var(--agent-nova)' },
 ]
 
 const conversations = [
@@ -224,15 +225,18 @@ export default function Dashboard() {
             </span>
           </div>
 
-          {/* Agent grid */}
-          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          {/* Agent grid — 2 columns */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             {agents.map((agent) => (
               <AgentCard key={agent.name} {...agent} />
             ))}
           </div>
 
-          <Button variant="secondary" fullWidth>
-            Activate Your First Agent
+          <Button fullWidth>
+            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+              <Icon name="add" size={16} color="#fff" />
+              Activate Your First Agent
+            </span>
           </Button>
         </div>
 

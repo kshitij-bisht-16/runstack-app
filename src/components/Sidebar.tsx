@@ -32,6 +32,14 @@ const sections: { title: string; items: NavItem[] }[] = [
   },
 ]
 
+function Spacer({ h }: { h: number }) {
+  return <div style={{ width: '200px', height: `${h}px`, flexShrink: 0 }} />
+}
+
+function Divider() {
+  return <div style={{ width: '200px', height: '1px', background: '#242424', flexShrink: 0 }} />
+}
+
 export default function Sidebar() {
   const location = useLocation()
   const navigate = useNavigate()
@@ -46,46 +54,53 @@ export default function Sidebar() {
         background: 'var(--bg-surface)',
         display: 'flex',
         flexDirection: 'column',
-        padding: '20px 0 20px 20px',
+        padding: '20px',
         gap: '4px',
         flexShrink: 0,
         borderRight: '1px solid var(--border-subtle)',
       }}
     >
-      {/* Brand */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginBottom: '12px' }}>
-        <span
-          style={{
-            fontSize: '16px',
-            fontWeight: 700,
-            color: 'var(--text-primary)',
-            fontFamily: "'Sora', sans-serif",
-            letterSpacing: '0.5px',
-          }}
-        >
-          CRAFTERTECH
-        </span>
-        <span
-          style={{
-            fontSize: '11px',
-            fontWeight: 400,
-            color: 'var(--text-tertiary)',
-            fontFamily: "'Sora', sans-serif",
-          }}
-        >
-          AI Workforce Platform
-        </span>
+      {/* Brand header — Frame 9 in Figma (h:49 = brand h:36 + gap:12 + divider h:1) */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', height: '36px', justifyContent: 'center' }}>
+          <span
+            style={{
+              fontSize: '16px',
+              fontWeight: 700,
+              color: 'var(--text-primary)',
+              fontFamily: "'Sora', sans-serif",
+              letterSpacing: '0.5px',
+            }}
+          >
+            CRAFTERTECH
+          </span>
+          <span
+            style={{
+              fontSize: '11px',
+              fontWeight: 400,
+              color: 'var(--text-tertiary)',
+              fontFamily: "'Sora', sans-serif",
+            }}
+          >
+            AI Workforce Platform
+          </span>
+        </div>
+        <Divider />
       </div>
 
-      {/* Divider */}
-      <div style={{ width: '200px', height: '1px', background: '#242424' }} />
+      {/* spacer h:8 after brand */}
+      <Spacer h={8} />
 
-      <div style={{ height: '8px' }} />
+      {/* Flat list: section labels, spacers, nav items, dividers */}
+      {sections.map((section, si) => {
+        const elements: React.ReactNode[] = []
 
-      {sections.map((section, si) => (
-        <div key={section.title}>
-          {/* Section label */}
-          <div style={{ padding: '0 12px', height: '24px', display: 'flex', alignItems: 'center' }}>
+        /* Section label */
+        elements.push(
+          <div
+            key={`label-${section.title}`}
+            style={{ padding: '0 12px', height: '24px', display: 'flex', alignItems: 'center' }}
+          >
             <span
               style={{
                 fontSize: '10px',
@@ -99,64 +114,67 @@ export default function Sidebar() {
               {section.title}
             </span>
           </div>
+        )
 
-          <div style={{ height: '4px' }} />
+        /* spacer h:4 after section label */
+        elements.push(<Spacer key={`sp-after-label-${si}`} h={4} />)
 
-          {/* Nav items */}
-          {section.items.map((item) => {
-            const active = isActive(item.path)
-            return (
-              <button
-                key={item.path}
-                onClick={() => navigate(item.path)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  width: '200px',
-                  height: '36px',
-                  padding: '0 12px',
-                  borderRadius: 'var(--radius-md)',
-                  border: 'none',
-                  cursor: 'pointer',
-                  background: active ? 'var(--brand-accent)' : 'transparent',
-                  fontFamily: "'Sora', sans-serif",
-                  fontSize: '13px',
-                  fontWeight: active ? 600 : 400,
-                  color: active ? 'var(--text-primary)' : '#8C8C8C',
-                  transition: 'background 0.15s',
-                  textAlign: 'left',
-                }}
-                onMouseEnter={(e) => {
-                  if (!active) e.currentTarget.style.background = 'var(--bg-hover)'
-                }}
-                onMouseLeave={(e) => {
-                  if (!active) e.currentTarget.style.background = 'transparent'
-                }}
-              >
-                <Icon name={item.icon} size={16} color={active ? 'var(--text-primary)' : '#8C8C8C'} />
-                {item.label}
-              </button>
-            )
-          })}
+        /* Nav items */
+        section.items.forEach((item) => {
+          const active = isActive(item.path)
+          elements.push(
+            <button
+              key={item.path}
+              onClick={() => navigate(item.path)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                width: '200px',
+                height: '36px',
+                padding: '0 12px',
+                borderRadius: 'var(--radius-md)',
+                border: 'none',
+                cursor: 'pointer',
+                background: active ? 'var(--brand-accent)' : 'transparent',
+                fontFamily: "'Sora', sans-serif",
+                fontSize: '13px',
+                fontWeight: active ? 600 : 400,
+                color: active ? 'var(--text-primary)' : '#8C8C8C',
+                transition: 'background 0.15s',
+                textAlign: 'left',
+                flexShrink: 0,
+              }}
+              onMouseEnter={(e) => {
+                if (!active) e.currentTarget.style.background = 'var(--bg-hover)'
+              }}
+              onMouseLeave={(e) => {
+                if (!active) e.currentTarget.style.background = 'transparent'
+              }}
+            >
+              <Icon name={item.icon} size={16} color={active ? 'var(--text-primary)' : '#8C8C8C'} />
+              {item.label}
+            </button>
+          )
+        })
 
-          {/* Divider + spacer between sections */}
-          {si < sections.length - 1 && (
-            <>
-              <div style={{ height: '12px' }} />
-              <div style={{ width: '200px', height: '1px', background: '#242424' }} />
-              <div style={{ height: '12px' }} />
-            </>
-          )}
-        </div>
-      ))}
+        /* Divider + spacers between sections */
+        if (si < sections.length - 1) {
+          elements.push(<Spacer key={`sp-before-div-${si}`} h={12} />)
+          elements.push(<Divider key={`div-${si}`} />)
+          elements.push(<Spacer key={`sp-after-div-${si}`} h={12} />)
+        }
 
-      {/* Spacer */}
+        return elements
+      })}
+
+      {/* Flex spacer to push user profile to bottom */}
       <div style={{ flex: 1 }} />
 
-      {/* Divider */}
-      <div style={{ width: '200px', height: '1px', background: '#242424' }} />
-      <div style={{ height: '12px' }} />
+      {/* spacer h:16 before bottom divider */}
+      <Spacer h={16} />
+      <Divider />
+      <Spacer h={12} />
 
       {/* User profile */}
       <div
@@ -167,8 +185,7 @@ export default function Sidebar() {
           display: 'flex',
           alignItems: 'center',
           gap: '10px',
-          background: 'rgba(255, 255, 255, 0.04)',
-          borderRadius: 'var(--radius-md)',
+          flexShrink: 0,
         }}
       >
         <div
@@ -184,7 +201,7 @@ export default function Sidebar() {
             color: 'var(--text-secondary)',
           }}
         >
-          K
+          <Icon name="account_circle" size={32} color="var(--text-secondary)" />
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
           <span

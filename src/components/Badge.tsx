@@ -1,4 +1,4 @@
-type BadgeVariant = 'default' | 'active' | 'warning' | 'error' | 'info'
+type BadgeVariant = 'default' | 'active' | 'warning' | 'error' | 'info' | 'free-plan' | 'claude' | 'openai' | 'gemini'
 
 interface BadgeProps {
   variant?: BadgeVariant
@@ -30,6 +30,26 @@ const variantStyles: Record<BadgeVariant, { bg: string; color: string; dot: stri
     bg: 'var(--info-muted)',
     color: 'var(--info)',
     dot: '● ',
+  },
+  'free-plan': {
+    bg: 'var(--bg-elevated)',
+    color: 'var(--text-primary)',
+    dot: '',
+  },
+  claude: {
+    bg: 'var(--agent-spark-muted)',
+    color: 'var(--agent-spark)',
+    dot: '',
+  },
+  openai: {
+    bg: 'var(--agent-pixel-muted)',
+    color: 'var(--agent-pixel)',
+    dot: '',
+  },
+  gemini: {
+    bg: 'var(--agent-nova-muted)',
+    color: 'var(--agent-nova)',
+    dot: '',
   },
 }
 
