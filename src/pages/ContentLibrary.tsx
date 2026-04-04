@@ -1,10 +1,18 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button'
+import Icon from '../components/Icon'
+import Badge from '../components/Badge'
+import Tag from '../components/Tag'
 
-const filters = ['All', 'Brand Identity', 'Product Info', 'Tone of Voice', 'Target Audience']
+/* ── Filters ── */
+const brandFilters = ['All', 'Brand Identity', 'Product Info', 'Tone of Voice', 'Target Audience']
+const generatedFilters = ['All', 'Social Media', 'Blog Post', 'Ad Copy', 'Email']
 
+/* ── Brand Context cards ── */
 const brandCards = [
   {
+    id: 'bc-1',
     category: 'Brand Identity',
     categoryColor: 'var(--agent-pixel)',
     files: '3 files',
@@ -14,6 +22,7 @@ const brandCards = [
     tags: ['Logo', 'Colors', 'Typography'],
   },
   {
+    id: 'bc-2',
     category: 'Product Info',
     categoryColor: 'var(--success)',
     files: '1 file',
@@ -23,6 +32,7 @@ const brandCards = [
     tags: ['Features', 'Pricing', 'API'],
   },
   {
+    id: 'bc-3',
     category: 'Tone of Voice',
     categoryColor: 'var(--warning)',
     files: '2 files',
@@ -32,6 +42,7 @@ const brandCards = [
     tags: ['Tone', 'Style', 'Copy'],
   },
   {
+    id: 'bc-4',
     category: 'Target Audience',
     categoryColor: 'var(--agent-spark)',
     files: '1 file',
@@ -42,12 +53,83 @@ const brandCards = [
   },
 ]
 
+/* ── Generated Content cards ── */
+const generatedCards = [
+  {
+    id: 'gc-1',
+    contentType: 'Social media',
+    agent: 'Spark',
+    agentColor: 'var(--agent-spark)',
+    date: 'Mar 10, 2026',
+    status: 'Pending Review' as const,
+    title: 'Launch Day Social Campaign',
+    desc: '3 post variants for the product launch announcement.',
+    tags: ['Caption', 'Hashtag', 'Thread'],
+    variants: 3,
+  },
+  {
+    id: 'gc-2',
+    contentType: 'Social media',
+    agent: 'Pixel',
+    agentColor: 'var(--agent-pixel)',
+    date: 'Mar 9, 2026',
+    status: 'Approved' as const,
+    title: 'Why AI Agents Are the Future',
+    desc: 'Long-form blog post exploring autonomous AI workforce trends.',
+    tags: ['AI', 'Trends', 'B2B'],
+    variants: 1,
+  },
+  {
+    id: 'gc-3',
+    contentType: 'Social media',
+    agent: 'Bolt',
+    agentColor: 'var(--agent-bolt)',
+    date: 'Mar 7, 2026',
+    status: 'Needs Revision' as const,
+    title: 'Q1 Performance Ad Variants',
+    desc: '5 ad variations for LinkedIn and Meta campaigns.',
+    tags: ['Ads', 'CTA', 'Performance'],
+    variants: 5,
+  },
+  {
+    id: 'gc-4',
+    contentType: 'Social media',
+    agent: 'Cleo',
+    agentColor: 'var(--agent-cleo)',
+    date: 'Mar 5, 2026',
+    status: 'Edited' as const,
+    title: 'March Newsletter — Product Updates',
+    desc: 'Monthly newsletter covering new features and agent improvements.',
+    tags: ['Email', 'Updates', 'Monthly'],
+    variants: 2,
+  },
+]
+
+type ModalState = 'none' | 'add' | 'uploading' | 'success'
+
+const statusColors: Record<string, { bg: string; color: string }> = {
+  'Pending Review': { bg: 'var(--warning-muted)', color: 'var(--warning)' },
+  'Approved': { bg: 'var(--success-muted)', color: 'var(--success)' },
+  'Needs Revision': { bg: 'var(--error-muted)', color: 'var(--error)' },
+  'Edited': { bg: 'var(--info-muted)', color: 'var(--info)' },
+}
+
 export default function ContentLibrary() {
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<'generated' | 'brand'>('brand')
   const [activeFilter, setActiveFilter] = useState('All')
+  const [modal, setModal] = useState<ModalState>('none')
+  const [selectedType, setSelectedType] = useState('Brand Identity')
+
+  const filters = activeTab === 'brand' ? brandFilters : generatedFilters
+
+  const handleSaveBrandContext = () => {
+    setModal('uploading')
+    setTimeout(() => setModal('success'), 2000)
+  }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '0 32px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '0 32px', position: 'relative' }}>
       {/* Topbar */}
       <div style={{ height: '82px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -58,7 +140,11 @@ export default function ContentLibrary() {
             Manage brand context and AI-generated content
           </span>
         </div>
-        <Button>+ Add Brand Context</Button>
+        {activeTab === 'brand' ? (
+          <Button onClick={() => setModal('add')}>+ Add Brand Context</Button>
+        ) : (
+          <Button>Export All</Button>
+        )}
       </div>
 
       {/* Tabs */}
@@ -66,7 +152,7 @@ export default function ContentLibrary() {
         {(['generated', 'brand'] as const).map((tab) => (
           <button
             key={tab}
-            onClick={() => setActiveTab(tab)}
+            onClick={() => { setActiveTab(tab); setActiveFilter('All') }}
             style={{
               padding: '0 16px',
               height: '40px',
@@ -88,34 +174,39 @@ export default function ContentLibrary() {
 
       {/* Search + filter */}
       <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-        <input
-          placeholder="Search brand context..."
-          style={{
-            width: '540px',
-            height: '40px',
-            padding: '0 14px',
-            borderRadius: 'var(--radius-md)',
-            background: 'var(--bg-surface)',
-            border: '1px solid var(--border-subtle)',
-            color: 'var(--text-primary)',
-            fontSize: '13px',
-            fontFamily: "'Sora', sans-serif",
-            outline: 'none',
-          }}
-        />
+        <div style={{ position: 'relative', width: '540px' }}>
+          <input
+            placeholder={activeTab === 'brand' ? 'Search brand context...' : 'Search...'}
+            style={{
+              width: '100%',
+              height: '40px',
+              padding: '0 14px 0 36px',
+              borderRadius: 'var(--radius-md)',
+              background: 'var(--bg-surface)',
+              border: '1px solid var(--border-subtle)',
+              color: 'var(--text-primary)',
+              fontSize: '13px',
+              fontFamily: "'Sora', sans-serif",
+              outline: 'none',
+            }}
+          />
+          <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+            <Icon name="search" size={16} color="var(--text-tertiary)" />
+          </div>
+        </div>
         {filters.map((f) => (
           <button
             key={f}
             onClick={() => setActiveFilter(f)}
             style={{
-              height: '28px',
-              padding: '0 12px',
+              height: '32px',
+              padding: '0 14px',
               borderRadius: 'var(--radius-full)',
-              border: `1px solid ${activeFilter === f ? 'var(--agent-pixel)' : '#262626'}`,
-              background: activeFilter === f ? 'var(--agent-pixel)' : 'var(--bg-surface)',
-              color: activeFilter === f ? 'var(--agent-pixel)' : 'var(--text-secondary)',
+              border: activeFilter === f ? '1px solid var(--brand-accent)' : '1px solid var(--border-default)',
+              background: activeFilter === f ? 'var(--brand-accent)' : 'transparent',
+              color: activeFilter === f ? 'var(--text-primary)' : 'var(--text-secondary)',
               fontSize: '12px',
-              fontWeight: activeFilter === f ? 600 : 400,
+              fontWeight: 600,
               fontFamily: "'Sora', sans-serif",
               cursor: 'pointer',
               whiteSpace: 'nowrap',
@@ -126,77 +217,438 @@ export default function ContentLibrary() {
         ))}
       </div>
 
-      {/* Brand context grid */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-        {brandCards.map((card) => (
+      {/* ── Brand Context Tab ── */}
+      {activeTab === 'brand' && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+          {brandCards.map((card) => (
+            <div
+              key={card.id}
+              onClick={() => navigate(`/content/brand/${card.id}`)}
+              style={{
+                width: '560px',
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border-subtle)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px',
+                cursor: 'pointer',
+                transition: 'border-color 0.15s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--border-default)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)' }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '11px', fontWeight: 600, color: card.categoryColor, fontFamily: "'Sora', sans-serif" }}>
+                  {card.category}
+                </span>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>{card.files}</span>
+                  <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>{card.date}</span>
+                </div>
+              </div>
+              <span style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>
+                {card.title}
+              </span>
+              <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
+                {card.desc}
+              </span>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {card.tags.map((tag) => (
+                  <Tag key={tag}>{tag}</Tag>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          {/* Add card */}
           <div
-            key={card.title}
+            onClick={() => setModal('add')}
             style={{
               width: '560px',
-              background: 'var(--bg-surface)',
-              border: '1px solid var(--border-subtle)',
+              height: '196px',
+              background: 'var(--bg-base)',
+              border: '1px dashed var(--border-default)',
               borderRadius: 'var(--radius-lg)',
-              padding: '20px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '12px',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
               cursor: 'pointer',
             }}
           >
-            {/* Meta row */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: '11px', fontWeight: 600, color: card.categoryColor, fontFamily: "'Sora', sans-serif" }}>
-                {card.category}
+            <span style={{ fontSize: '32px', fontWeight: 700, color: 'var(--text-disabled)', fontFamily: "'Sora', sans-serif" }}>+</span>
+            <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
+              Add Brand Context
+            </span>
+            <span style={{ fontSize: '12px', color: 'var(--text-disabled)', fontFamily: "'Sora', sans-serif" }}>
+              Upload files, add URLs or paste text
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* ── Generated Content Tab ── */}
+      {activeTab === 'generated' && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+          {generatedCards.map((card) => (
+            <div
+              key={card.id}
+              style={{
+                width: '560px',
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border-subtle)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px',
+                cursor: 'pointer',
+                transition: 'border-color 0.15s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--border-default)' }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)' }}
+            >
+              {/* Meta row */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <Badge>{card.contentType}</Badge>
+                <span style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '4px',
+                  height: '24px', padding: '0 10px', borderRadius: 'var(--radius-full)',
+                  fontSize: '11px', fontWeight: 600, fontFamily: "'Sora', sans-serif",
+                  color: card.agentColor,
+                  background: `${card.agentColor}1F`,
+                }}>
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: card.agentColor }} />
+                  {card.agent}
+                </span>
+                <span style={{ marginLeft: 'auto', fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
+                  {card.date}
+                </span>
+                <span style={{
+                  display: 'inline-flex', alignItems: 'center',
+                  height: '24px', padding: '0 10px', borderRadius: 'var(--radius-full)',
+                  fontSize: '11px', fontWeight: 600, fontFamily: "'Sora', sans-serif",
+                  background: statusColors[card.status].bg,
+                  color: statusColors[card.status].color,
+                }}>
+                  {card.status}
+                </span>
+              </div>
+
+              {/* Title + desc */}
+              <span style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>
+                {card.title}
               </span>
-              <div style={{ display: 'flex', gap: '12px' }}>
-                <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>{card.files}</span>
-                <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>{card.date}</span>
+              <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
+                {card.desc}
+              </span>
+
+              {/* Tags + variants */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {card.tags.map((tag) => (
+                  <Tag key={tag}>{tag}</Tag>
+                ))}
+                <span style={{ marginLeft: 'auto', fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
+                  {card.variants} variant{card.variants !== 1 ? 's' : ''}
+                </span>
+              </div>
+
+              {/* Actions */}
+              <div style={{ display: 'flex', alignItems: 'center', borderTop: '1px solid var(--border-subtle)', paddingTop: '12px' }}>
+                <button
+                  onClick={(e) => { e.stopPropagation(); navigate(`/content/generated/${card.id}`) }}
+                  style={{
+                    background: 'transparent', border: 'none', color: 'var(--brand-accent-text-light)',
+                    fontSize: '12px', fontWeight: 600, fontFamily: "'Sora', sans-serif", cursor: 'pointer',
+                  }}
+                >
+                  View Details →
+                </button>
+                <div style={{ marginLeft: 'auto', display: 'flex', gap: '8px' }}>
+                  <button style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px' }}>
+                    <Icon name="edit" size={16} color="var(--text-tertiary)" />
+                  </button>
+                  <button style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px' }}>
+                    <Icon name="delete" size={16} color="var(--text-tertiary)" />
+                  </button>
+                </div>
               </div>
             </div>
+          ))}
 
-            <span style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>
-              {card.title}
+          {/* Add card (dashed) */}
+          <div
+            style={{
+              width: '560px',
+              height: '260px',
+              background: 'var(--bg-base)',
+              border: '1px dashed var(--border-default)',
+              borderRadius: 'var(--radius-lg)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              cursor: 'pointer',
+            }}
+          >
+            <span style={{ fontSize: '32px', fontWeight: 700, color: 'var(--text-disabled)', fontFamily: "'Sora', sans-serif" }}>+</span>
+            <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
+              Generate New Content
             </span>
-            <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
-              {card.desc}
+            <span style={{ fontSize: '12px', color: 'var(--text-disabled)', fontFamily: "'Sora', sans-serif" }}>
+              Start a conversation with an AI agent
             </span>
-
-            {/* Tags */}
-            <div style={{ display: 'flex', gap: '8px' }}>
-              {card.tags.map((tag) => (
-                <span key={tag} style={{ fontSize: '11px', color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif" }}>
-                  {tag}
-                </span>
-              ))}
-            </div>
           </div>
-        ))}
+        </div>
+      )}
 
-        {/* Add card */}
+      {/* ═══ MODALS ═══ */}
+
+      {/* Overlay */}
+      {modal !== 'none' && (
         <div
+          onClick={() => setModal('none')}
           style={{
-            width: '560px',
-            height: '196px',
-            background: 'var(--bg-base)',
-            border: '1px solid #262626',
-            borderRadius: 'var(--radius-lg)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '10px',
-            cursor: 'pointer',
+            position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100,
           }}
         >
-          <span style={{ fontSize: '32px', fontWeight: 700, color: 'var(--text-disabled)', fontFamily: "'Sora', sans-serif" }}>+</span>
-          <span style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
-            Add Brand Context
-          </span>
-          <span style={{ fontSize: '12px', color: 'var(--text-disabled)', fontFamily: "'Sora', sans-serif" }}>
-            Upload files, add URLs or paste text
-          </span>
+          <div onClick={(e) => e.stopPropagation()}>
+            {/* ── Add Brand Context Modal ── */}
+            {modal === 'add' && (
+              <div style={{
+                width: '520px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)',
+                border: '1px solid var(--border-subtle)', padding: '32px', display: 'flex', flexDirection: 'column', gap: '20px',
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h3 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif", margin: 0 }}>
+                    Add Brand Context
+                  </h3>
+                  <button onClick={() => setModal('none')} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
+                    <Icon name="close" size={20} color="var(--text-secondary)" />
+                  </button>
+                </div>
+
+                {/* Context Type */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>
+                    Context Type
+                  </label>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                    {[
+                      { name: 'Brand Identity', color: 'var(--warning)' },
+                      { name: 'Product Info', color: 'var(--success)' },
+                      { name: 'Tone of Voice', color: 'var(--warning)' },
+                      { name: 'Target Audience', color: 'var(--agent-spark)' },
+                    ].map((t) => (
+                      <button
+                        key={t.name}
+                        onClick={() => setSelectedType(t.name)}
+                        style={{
+                          height: '44px', borderRadius: 'var(--radius-md)',
+                          background: selectedType === t.name ? 'var(--bg-overlay)' : 'var(--bg-elevated)',
+                          border: selectedType === t.name ? '1px solid var(--brand-accent)' : '1px solid var(--border-default)',
+                          color: 'var(--text-primary)', fontSize: '13px', fontWeight: 500, fontFamily: "'Sora', sans-serif",
+                          cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', padding: '0 14px',
+                        }}
+                      >
+                        <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: t.color }} />
+                        {t.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Context Name */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>Context Name</label>
+                  <input
+                    placeholder="e.g. Craftertech Brand Guidelines"
+                    style={{
+                      height: '40px', padding: '0 14px', borderRadius: 'var(--radius-md)',
+                      background: 'var(--bg-elevated)', border: '1px solid var(--border-default)',
+                      color: 'var(--text-primary)', fontSize: '13px', fontFamily: "'Sora', sans-serif", outline: 'none',
+                    }}
+                  />
+                </div>
+
+                {/* Description */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>Description</label>
+                  <textarea
+                    placeholder="Briefly describe what this context contains and how agents should use it..."
+                    rows={3}
+                    style={{
+                      padding: '10px 14px', borderRadius: 'var(--radius-md)',
+                      background: 'var(--bg-elevated)', border: '1px solid var(--border-default)',
+                      color: 'var(--text-primary)', fontSize: '13px', fontFamily: "'Sora', sans-serif",
+                      outline: 'none', resize: 'none',
+                    }}
+                  />
+                </div>
+
+                {/* Upload Files */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>Upload Files</label>
+                  <div style={{
+                    border: '1px dashed var(--border-default)', borderRadius: 'var(--radius-md)',
+                    padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px',
+                    background: 'var(--bg-elevated)',
+                  }}>
+                    <Icon name="upload" size={20} color="var(--text-tertiary)" />
+                    <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>
+                      Drop files here or click to browse
+                    </span>
+                    <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>
+                      PDF, DOCX, TXT, PNG, JPG — max 25MB each
+                    </span>
+                  </div>
+                </div>
+
+                {/* URL */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>Or add a URL</label>
+                  <input
+                    placeholder="https://yourwebsite.com/brand-guidelines"
+                    style={{
+                      height: '40px', padding: '0 14px', borderRadius: 'var(--radius-md)',
+                      background: 'var(--bg-elevated)', border: '1px solid var(--border-default)',
+                      color: 'var(--text-primary)', fontSize: '13px', fontFamily: "'Sora', sans-serif", outline: 'none',
+                    }}
+                  />
+                </div>
+
+                {/* Tags */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <label style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>Tags</label>
+                  <input
+                    placeholder="e.g. Logo, Colors, Voice (comma separated)"
+                    style={{
+                      height: '40px', padding: '0 14px', borderRadius: 'var(--radius-md)',
+                      background: 'var(--bg-elevated)', border: '1px solid var(--border-default)',
+                      color: 'var(--text-primary)', fontSize: '13px', fontFamily: "'Sora', sans-serif", outline: 'none',
+                    }}
+                  />
+                </div>
+
+                {/* Actions */}
+                <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+                  <Button variant="ghost" onClick={() => setModal('none')}>Cancel</Button>
+                  <Button onClick={handleSaveBrandContext}>Save Brand Context</Button>
+                </div>
+              </div>
+            )}
+
+            {/* ── Uploading Modal ── */}
+            {modal === 'uploading' && (
+              <div style={{
+                width: '480px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)',
+                border: '1px solid var(--border-subtle)', padding: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px',
+              }}>
+                {/* Spinner */}
+                <div style={{
+                  width: '64px', height: '64px', borderRadius: '50%',
+                  border: '3px solid var(--border-default)', borderTopColor: 'var(--brand-accent)',
+                  animation: 'spin 1s linear infinite',
+                }} />
+                <Icon name="upload" size={20} color="var(--brand-accent)" />
+                <h3 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif", margin: 0 }}>
+                  Processing Brand Context
+                </h3>
+                <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif", textAlign: 'center' }}>
+                  Analyzing your files and extracting brand information for your AI agents...
+                </span>
+
+                {/* Progress bar */}
+                <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ height: '6px', borderRadius: 'var(--radius-full)', background: 'var(--bg-hover)', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: '65%', borderRadius: 'var(--radius-full)', background: 'var(--brand-accent)', transition: 'width 0.5s' }} />
+                  </div>
+                  <span style={{ fontSize: '12px', color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif", textAlign: 'center' }}>
+                    65% — Extracting brand voice patterns
+                  </span>
+                </div>
+
+                {/* Files */}
+                <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    padding: '10px 14px', borderRadius: 'var(--radius-sm)', background: 'var(--bg-elevated)',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--success)' }} />
+                      <span style={{ fontSize: '13px', color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>brand-guidelines.pdf</span>
+                    </div>
+                    <span style={{ fontSize: '12px', color: 'var(--success)', fontWeight: 500, fontFamily: "'Sora', sans-serif" }}>✓ Done</span>
+                  </div>
+                  <div style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    padding: '10px 14px', borderRadius: 'var(--radius-sm)', background: 'var(--bg-elevated)',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--brand-accent)' }} />
+                      <span style={{ fontSize: '13px', color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>tone-of-voice.docx</span>
+                    </div>
+                    <span style={{ fontSize: '12px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>340 KB</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── Success Modal ── */}
+            {modal === 'success' && (
+              <div style={{
+                width: '480px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-lg)',
+                border: '1px solid var(--border-subtle)', padding: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px',
+              }}>
+                {/* Success circle */}
+                <div style={{
+                  width: '64px', height: '64px', borderRadius: '50%',
+                  border: '3px solid var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Icon name="check" size={28} color="var(--success)" />
+                </div>
+                <Icon name="check" size={20} color="var(--success)" />
+                <h3 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif", margin: 0 }}>
+                  Brand Context Added!
+                </h3>
+                <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif", textAlign: 'center' }}>
+                  Your brand guidelines have been processed and are now available to all your AI agents.
+                </span>
+
+                {/* Summary */}
+                <div style={{
+                  width: '100%', borderRadius: 'var(--radius-md)', background: 'var(--bg-elevated)',
+                  padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: '10px',
+                }}>
+                  {[
+                    ['Context', 'Craftertech Brand Guidelines'],
+                    ['Type', 'Brand Identity'],
+                    ['Files', '2 files processed'],
+                  ].map(([label, value]) => (
+                    <div key={label} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif" }}>{label}</span>
+                      <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', fontFamily: "'Sora', sans-serif" }}>{value}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', width: '100%' }}>
+                  <Button variant="ghost" fullWidth onClick={() => { setModal('none'); setModal('add') }}>Add Another</Button>
+                  <Button fullWidth onClick={() => { setModal('none'); navigate('/content/brand/bc-1') }}>View Brand Context</Button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* Spinner animation */}
+      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
     </div>
   )
 }

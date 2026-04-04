@@ -8,6 +8,8 @@ import ContentLibrary from './pages/ContentLibrary'
 import Analytics from './pages/Analytics'
 import Billing from './pages/Billing'
 import Settings from './pages/Settings'
+import BrandContextDetail from './pages/BrandContextDetail'
+import GeneratedContentDetail from './pages/GeneratedContentDetail'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import ForgotPassword from './pages/ForgotPassword'
@@ -22,6 +24,8 @@ function App() {
           <Route path="/agents" element={<AIAgents />} />
           <Route path="/conversations" element={<Conversations />} />
           <Route path="/content" element={<ContentLibrary />} />
+          <Route path="/content/brand/:id" element={<BrandContextDetail />} />
+          <Route path="/content/generated/:id" element={<GeneratedContentDetail />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/billing" element={<Billing />} />
           <Route path="/settings" element={<Settings />} />
