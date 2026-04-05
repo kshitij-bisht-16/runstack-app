@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom'
+import DottedSurface from '../components/DottedSurface'
 
 const floatKeyframes = `
 @keyframes floatLarge {
@@ -35,6 +36,9 @@ export default function AuthLayout() {
             flexShrink: 0,
           }}
         >
+          {/* Dotted surface background */}
+          <DottedSurface />
+
           {/* Large floating ellipse */}
           <div
             style={{
