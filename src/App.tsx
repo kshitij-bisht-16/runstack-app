@@ -13,6 +13,7 @@ import GeneratedContentDetail from './pages/GeneratedContentDetail'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import ForgotPassword from './pages/ForgotPassword'
+import CheckYourEmail from './pages/CheckYourEmail'
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/check-email" element={<CheckYourEmail />} />
         </Route>
 
         {/* Redirect root to dashboard */}
