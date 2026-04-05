@@ -14,6 +14,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import ForgotPassword from './pages/ForgotPassword'
 import CheckYourEmail from './pages/CheckYourEmail'
+import LandingPage from './pages/LandingPage'
 
 function App() {
   return (
@@ -40,8 +41,8 @@ function App() {
           <Route path="/check-email" element={<CheckYourEmail />} />
         </Route>
 
-        {/* Redirect root to dashboard */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        {/* Landing page */}
+        <Route path="/" element={<LandingPage />} />
       </Routes>
     </BrowserRouter>
   )
