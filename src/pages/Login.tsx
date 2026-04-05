@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../components/Button'
 import Input from '../components/Input'
 
 export default function Login() {
+  const navigate = useNavigate()
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       {/* Heading */}
@@ -38,7 +39,7 @@ export default function Login() {
       </div>
 
       {/* Actions */}
-      <Button fullWidth>Sign In</Button>
+      <Button fullWidth onClick={() => navigate('/dashboard')}>Sign In</Button>
 
       {/* Divider */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -47,7 +48,7 @@ export default function Login() {
         <div style={{ flex: 1, height: '1px', background: 'var(--border-default)' }} />
       </div>
 
-      <Button variant="ghost" fullWidth>Continue with google</Button>
+      <Button variant="ghost" fullWidth onClick={() => navigate('/dashboard')}>Continue with google</Button>
 
       {/* Signup link */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '4px' }}>
