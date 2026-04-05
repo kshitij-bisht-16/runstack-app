@@ -8,13 +8,13 @@ export default function AuthLayout() {
         style={{
           width: '560px',
           height: '100%',
-          background: '#1E1B4B',
+          background: '#4F46E5',
           position: 'relative',
           overflow: 'hidden',
           flexShrink: 0,
         }}
       >
-        {/* Decorative ellipse — top right */}
+        {/* Decorative glass ellipse — top right */}
         <div
           style={{
             position: 'absolute',
@@ -23,12 +23,13 @@ export default function AuthLayout() {
             borderRadius: '50%',
             top: '-100px',
             left: '234px',
-            background: 'rgba(99, 102, 241, 0.55)',
-            filter: 'blur(80px)',
+            background: 'rgba(64, 64, 64, 0.1)',
+            backdropFilter: 'blur(27px)',
+            WebkitBackdropFilter: 'blur(27px)',
             pointerEvents: 'none',
           }}
         />
-        {/* Decorative ellipse — bottom left */}
+        {/* Decorative glass ellipse — bottom left */}
         <div
           style={{
             position: 'absolute',
@@ -37,8 +38,9 @@ export default function AuthLayout() {
             borderRadius: '50%',
             top: '663px',
             left: '-54px',
-            background: 'rgba(129, 140, 248, 0.45)',
-            filter: 'blur(60px)',
+            background: 'rgba(64, 64, 64, 0.1)',
+            backdropFilter: 'blur(27px)',
+            WebkitBackdropFilter: 'blur(27px)',
             pointerEvents: 'none',
           }}
         />
