@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Button from '../components/Button'
+import DottedSurface from '../components/DottedSurface'
 
 const font = "'Sora', sans-serif"
 
@@ -111,22 +112,25 @@ export default function LandingPage() {
       </nav>
 
       {/* ═══ HERO ═══ */}
-      <section style={{ height: '700px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: '24px' }}>
-        <span style={{ display: 'inline-flex', alignItems: 'center', height: '28px', padding: '0 14px', borderRadius: 'var(--radius-full)', border: '1px solid var(--brand-accent)', fontSize: '12px', color: 'var(--brand-accent-text)' }}>
-          AI Workforce Platform — Now in Beta
-        </span>
-        <h1 style={{ fontSize: '48px', fontWeight: 800, lineHeight: '56px', margin: 0 }}>
-          Your AI Workforce.<br />
-          <span style={{ color: 'var(--brand-accent)' }}>Always On.</span>
-        </h1>
-        <p style={{ fontSize: '16px', lineHeight: '24px', color: 'var(--text-secondary)', maxWidth: '520px', margin: 0 }}>
-          Deploy specialized AI agents that write, design, automate, and communicate — 24/7 via dashboard and WhatsApp.
-        </p>
-        <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
-          <Link to="/signup"><Button>Start free — no card needed</Button></Link>
-          <button style={{ height: '40px', padding: '0 20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-default)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontSize: '14px', fontWeight: 600, fontFamily: font, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            ▶  See it in action
-          </button>
+      <section style={{ height: '700px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: '24px', position: 'relative', overflow: 'hidden' }}>
+        <DottedSurface />
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', height: '28px', padding: '0 14px', borderRadius: 'var(--radius-full)', border: '1px solid var(--brand-accent)', fontSize: '12px', color: 'var(--brand-accent-text)' }}>
+            AI Workforce Platform — Now in Beta
+          </span>
+          <h1 style={{ fontSize: '48px', fontWeight: 800, lineHeight: '56px', margin: 0 }}>
+            Your AI Workforce.<br />
+            <span style={{ color: 'var(--brand-accent)' }}>Always On.</span>
+          </h1>
+          <p style={{ fontSize: '16px', lineHeight: '24px', color: 'var(--text-secondary)', maxWidth: '520px', margin: 0 }}>
+            Deploy specialized AI agents that write, design, automate, and communicate — 24/7 via dashboard and WhatsApp.
+          </p>
+          <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+            <Link to="/signup"><Button>Start free — no card needed</Button></Link>
+            <button style={{ height: '40px', padding: '0 20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-default)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontSize: '14px', fontWeight: 600, fontFamily: font, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              ▶  See it in action
+            </button>
+          </div>
         </div>
       </section>
 
