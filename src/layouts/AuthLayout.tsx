@@ -1,29 +1,9 @@
 import { Outlet } from 'react-router-dom'
 import DottedSurface from '../components/DottedSurface'
 
-const floatKeyframes = `
-@keyframes floatLarge {
-  0%   { top: -100px; left: 234px; }
-  20%  { top: 50px;   left: 300px; }
-  40%  { top: 400px;  left: 150px; }
-  60%  { top: 550px;  left: 350px; }
-  80%  { top: 200px;  left: 50px;  }
-  100% { top: -100px; left: 234px; }
-}
-@keyframes floatSmall {
-  0%   { top: 663px;  left: -54px;  }
-  20%  { top: 400px;  left: 200px;  }
-  40%  { top: 100px;  left: 300px;  }
-  60%  { top: -50px;  left: 100px;  }
-  80%  { top: 300px;  left: -30px;  }
-  100% { top: 663px;  left: -54px;  }
-}
-`
-
 export default function AuthLayout() {
   return (
     <>
-      <style>{floatKeyframes}</style>
       <div style={{ display: 'flex', height: '100vh', background: 'var(--bg-base)' }}>
         {/* Brand panel */}
         <div
@@ -38,43 +18,6 @@ export default function AuthLayout() {
         >
           {/* Dotted surface background */}
           <DottedSurface />
-
-          {/* Large floating ellipse */}
-          <div
-            style={{
-              position: 'absolute',
-              width: '380px',
-              height: '380px',
-              borderRadius: '50%',
-              top: '-100px',
-              left: '234px',
-              background: 'rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(40px)',
-              WebkitBackdropFilter: 'blur(40px)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              boxShadow: 'inset 0 0 60px rgba(255, 255, 255, 0.05)',
-              pointerEvents: 'none',
-              animation: 'floatLarge 20s ease-in-out infinite',
-            }}
-          />
-          {/* Small floating ellipse */}
-          <div
-            style={{
-              position: 'absolute',
-              width: '320px',
-              height: '320px',
-              borderRadius: '50%',
-              top: '663px',
-              left: '-54px',
-              background: 'rgba(255, 255, 255, 0.06)',
-              backdropFilter: 'blur(40px)',
-              WebkitBackdropFilter: 'blur(40px)',
-              border: '1px solid rgba(255, 255, 255, 0.10)',
-              boxShadow: 'inset 0 0 60px rgba(255, 255, 255, 0.04)',
-              pointerEvents: 'none',
-              animation: 'floatSmall 24s ease-in-out infinite',
-            }}
-          />
 
           {/* Brand content */}
           <div
