@@ -43,7 +43,7 @@ export default function DottedSurface() {
         const y = 0
         const z = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2
         positions.push(x, y, z)
-        colors.push(200, 200, 200)
+        colors.push(99, 102, 241)
       }
     }
 
