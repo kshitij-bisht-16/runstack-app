@@ -1,17 +1,21 @@
 import { Outlet } from 'react-router-dom'
 
 const floatKeyframes = `
-@keyframes floatTopRight {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(-20px, 15px) scale(1.03); }
-  50% { transform: translate(10px, 30px) scale(0.97); }
-  75% { transform: translate(-10px, -10px) scale(1.02); }
+@keyframes floatLarge {
+  0%   { top: -100px; left: 234px; }
+  20%  { top: 50px;   left: 300px; }
+  40%  { top: 400px;  left: 150px; }
+  60%  { top: 550px;  left: 350px; }
+  80%  { top: 200px;  left: 50px;  }
+  100% { top: -100px; left: 234px; }
 }
-@keyframes floatBottomLeft {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(15px, -20px) scale(1.04); }
-  50% { transform: translate(-10px, -15px) scale(0.98); }
-  75% { transform: translate(20px, 10px) scale(1.01); }
+@keyframes floatSmall {
+  0%   { top: 663px;  left: -54px;  }
+  20%  { top: 400px;  left: 200px;  }
+  40%  { top: 100px;  left: 300px;  }
+  60%  { top: -50px;  left: 100px;  }
+  80%  { top: 300px;  left: -30px;  }
+  100% { top: 663px;  left: -54px;  }
 }
 `
 
@@ -31,7 +35,7 @@ export default function AuthLayout() {
             flexShrink: 0,
           }}
         >
-          {/* Decorative glass ellipse — top right */}
+          {/* Large floating ellipse */}
           <div
             style={{
               position: 'absolute',
@@ -40,14 +44,12 @@ export default function AuthLayout() {
               borderRadius: '50%',
               top: '-100px',
               left: '234px',
-              background: 'rgba(64, 64, 64, 0.1)',
-              backdropFilter: 'blur(27px)',
-              WebkitBackdropFilter: 'blur(27px)',
+              background: '#5B54EF',
               pointerEvents: 'none',
-              animation: 'floatTopRight 12s ease-in-out infinite',
+              animation: 'floatLarge 20s ease-in-out infinite',
             }}
           />
-          {/* Decorative glass ellipse — bottom left */}
+          {/* Small floating ellipse */}
           <div
             style={{
               position: 'absolute',
@@ -56,11 +58,9 @@ export default function AuthLayout() {
               borderRadius: '50%',
               top: '663px',
               left: '-54px',
-              background: 'rgba(64, 64, 64, 0.1)',
-              backdropFilter: 'blur(27px)',
-              WebkitBackdropFilter: 'blur(27px)',
+              background: '#5B54EF',
               pointerEvents: 'none',
-              animation: 'floatBottomLeft 14s ease-in-out infinite',
+              animation: 'floatSmall 24s ease-in-out infinite',
             }}
           />
 
