@@ -1,9 +1,11 @@
 import { ButtonHTMLAttributes } from 'react'
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'disabled'
+type ButtonSize = 'sm' | 'md' | 'lg' | 'xl'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
+  size?: ButtonSize
   fullWidth?: boolean
 }
 
@@ -14,9 +16,9 @@ const variantStyles: Record<ButtonVariant, React.CSSProperties> = {
     border: 'none',
   },
   secondary: {
-    background: 'var(--bg-elevated)',
+    background: 'var(--bg-overlay)',
     color: 'var(--text-primary)',
-    border: '1px solid var(--brand-accent-border)',
+    border: '1px solid var(--border-strong)',
   },
   ghost: {
     background: 'transparent',
@@ -36,8 +38,25 @@ const variantStyles: Record<ButtonVariant, React.CSSProperties> = {
   },
 }
 
+// Dimensions + typography pulled from Figma "Button" component set 40:4095.
+// Height / radius / padding-x / gap / fontSize / lineHeight / letterSpacing all
+// scale per the size variant. Per the latest design-system update, button
+// labels now use Sora Regular (400) — NOT SemiBold (600) — at every size, and
+// XL drops the 0.1% letter-spacing of smaller sizes to 0.
+//   SM → Desktop/Label/Label RG          12/16,  letterSpacing 0.1%
+//   MD → Desktop/Label/Label LG (regular) 14/20,  letterSpacing 0.1%
+//   LG → Desktop/Label/Label LG (regular) 14/20,  letterSpacing 0.1%
+//   XL → Desktop/Body/Body LG Regular     16/24,  letterSpacing 0%
+const sizeStyles: Record<ButtonSize, React.CSSProperties> = {
+  sm: { height: '32px', padding: '0 12px', borderRadius: '8px',  gap: '6px',  fontSize: '12px', lineHeight: '16px', letterSpacing: '0.001em' },
+  md: { height: '40px', padding: '0 18px', borderRadius: '10px', gap: '8px',  fontSize: '14px', lineHeight: '20px', letterSpacing: '0.001em' },
+  lg: { height: '48px', padding: '0 20px', borderRadius: '10px', gap: '8px',  fontSize: '14px', lineHeight: '20px', letterSpacing: '0.001em' },
+  xl: { height: '56px', padding: '0 24px', borderRadius: '12px', gap: '10px', fontSize: '16px', lineHeight: '24px', letterSpacing: '0' },
+}
+
 export default function Button({
   variant = 'primary',
+  size = 'md',
   fullWidth = false,
   children,
   style,
@@ -53,27 +72,32 @@ export default function Button({
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '8px',
-        height: '40px',
-        padding: '0 18px',
-        borderRadius: 'var(--radius-md)',
         fontFamily: "'Sora', sans-serif",
-        fontSize: '13px',
-        fontWeight: 600,
-        lineHeight: '18px',
+        // Sora Regular (400) per the design-system update. fontSize, lineHeight,
+        // letterSpacing all come from sizeStyles below.
+        fontWeight: 400,
         cursor: v === 'disabled' ? 'not-allowed' : 'pointer',
-        transition: 'background 0.15s, border-color 0.15s',
+        transition: 'background 0.15s, border-color 0.15s, color 0.15s',
         width: fullWidth ? '100%' : undefined,
+        ...sizeStyles[size],
         ...variantStyles[v],
         ...style,
       }}
       onMouseEnter={(e) => {
-        if (v === 'primary') e.currentTarget.style.background = 'var(--brand-accent-dark)'
-        else if (v === 'secondary') e.currentTarget.style.background = 'var(--bg-hover)'
+        if (v === 'primary') {
+          e.currentTarget.style.background = 'var(--brand-accent-dark)'
+        } else if (v === 'secondary') {
+          e.currentTarget.style.borderColor = 'rgba(99, 102, 241, 0.8)'
+          e.currentTarget.style.color = 'var(--brand-accent)'
+        }
       }}
       onMouseLeave={(e) => {
-        if (v === 'primary') e.currentTarget.style.background = 'var(--brand-accent)'
-        else if (v === 'secondary') e.currentTarget.style.background = 'var(--bg-elevated)'
+        if (v === 'primary') {
+          e.currentTarget.style.background = 'var(--brand-accent)'
+        } else if (v === 'secondary') {
+          e.currentTarget.style.borderColor = 'var(--border-strong)'
+          e.currentTarget.style.color = 'var(--text-primary)'
+        }
       }}
       {...props}
     >

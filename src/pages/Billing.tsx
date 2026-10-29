@@ -69,8 +69,8 @@ export default function Billing() {
         </div>
 
         <div style={{ display: 'flex', gap: '12px' }}>
-          <Button variant="danger">Cancel Plan</Button>
-          <Button>Upgrade Plan</Button>
+          <Button variant="danger" size="sm">Cancel Plan</Button>
+          <Button size="sm">Upgrade Plan</Button>
         </div>
       </div>
 

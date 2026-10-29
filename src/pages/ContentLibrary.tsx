@@ -143,7 +143,7 @@ export default function ContentLibrary() {
         {activeTab === 'brand' ? (
           <Button onClick={() => setModal('add')}>+ Add Brand Context</Button>
         ) : (
-          <Button>Export All</Button>
+          <Button size="sm">Export All</Button>
         )}
       </div>
 

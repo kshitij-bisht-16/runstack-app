@@ -243,12 +243,15 @@ export default function Settings() {
                 </div>
               ))}
               {divider}
+              {/* Profile actions row — all Size=SM per Figma "07 — Settings"
+                  actions-row instances (Primary SM "Save Changes", Secondary SM
+                  "Discard", Danger SM "Delete Account"). */}
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', gap: '12px' }}>
-                  <Button>Save Changes</Button>
-                  <Button variant="ghost">Discard</Button>
+                  <Button size="sm">Save Changes</Button>
+                  <Button variant="ghost" size="sm">Discard</Button>
                 </div>
-                <Button variant="danger">Delete Account</Button>
+                <Button variant="danger" size="sm">Delete Account</Button>
               </div>
             </>
           )}
@@ -292,7 +295,7 @@ export default function Settings() {
                   {s.active ? (
                     <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--success)', fontFamily: "'Sora', sans-serif" }}>● Active</span>
                   ) : (
-                    <Button variant="danger" style={{ height: '32px', fontSize: '12px' }}>Revoke</Button>
+                    <Button variant="danger">Revoke</Button>
                   )}
                 </div>
               ))}
@@ -413,7 +416,7 @@ export default function Settings() {
                   <span style={{ width: '130px', fontSize: '11px', color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif" }}>{k.lastUsed}</span>
                   <span style={{ width: '130px', fontSize: '11px', color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif" }}>{k.key}</span>
                   <span style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button variant="danger" style={{ height: '36px', fontSize: '12px' }}>Revoke</Button>
+                    <Button variant="danger">Revoke</Button>
                   </span>
                 </div>
               ))}
@@ -502,12 +505,12 @@ export default function Settings() {
                     <div style={{ display: 'flex', gap: '8px' }}>
                       {intg.status === 'connected' && (
                         <>
-                          <Button variant="ghost" style={{ height: '36px', fontSize: '12px' }}>Configure</Button>
-                          <Button variant="secondary" style={{ height: '36px', fontSize: '12px' }}>Disconnect</Button>
+                          <Button variant="ghost">Configure</Button>
+                          <Button variant="ghost">Disconnect</Button>
                         </>
                       )}
-                      {intg.status === 'available' && <Button style={{ height: '36px', fontSize: '12px' }}>Connect</Button>}
-                      {intg.status === 'coming_soon' && <Button variant="secondary" style={{ height: '36px', fontSize: '12px' }}>Notify me</Button>}
+                      {intg.status === 'available' && <Button>Connect</Button>}
+                      {intg.status === 'coming_soon' && <Button variant="ghost">Notify me</Button>}
                     </div>
                   </div>
                 ))}
@@ -592,7 +595,7 @@ export default function Settings() {
                         {m.role}
                       </span>
                       <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>{m.joined}</span>
-                      {m.role !== 'Owner' && <Button variant="danger" style={{ height: '36px', fontSize: '12px' }}>Remove</Button>}
+                      {m.role !== 'Owner' && <Button variant="danger">Remove</Button>}
                     </div>
                   </div>
                   {i < teamMembers.length - 1 && divider}
@@ -618,7 +621,7 @@ export default function Settings() {
                     <span style={{ fontSize: '13px', color: 'var(--text-secondary)', fontFamily: "'Sora', sans-serif" }}>{inv.email}</span>
                     <span style={{ fontSize: '11px', color: 'var(--text-tertiary)', fontFamily: "'Sora', sans-serif" }}>{inv.sent}</span>
                   </div>
-                  <Button variant="secondary" style={{ height: '36px', fontSize: '12px' }}>Resend</Button>
+                  <Button variant="ghost">Resend</Button>
                 </div>
               ))}
             </>

@@ -1,7 +1,11 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 
-export default function DottedSurface() {
+interface DottedSurfaceProps {
+  color?: string
+}
+
+export default function DottedSurface({ color = '#FFFFFF' }: DottedSurfaceProps) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -37,13 +41,17 @@ export default function DottedSurface() {
     const colors: number[] = []
     const geometry = new THREE.BufferGeometry()
 
+    const r = parseInt(color.slice(1, 3), 16) / 255
+    const g = parseInt(color.slice(3, 5), 16) / 255
+    const b = parseInt(color.slice(5, 7), 16) / 255
+
     for (let ix = 0; ix < AMOUNTX; ix++) {
       for (let iy = 0; iy < AMOUNTY; iy++) {
         const x = ix * SEPARATION - (AMOUNTX * SEPARATION) / 2
         const y = 0
         const z = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2
         positions.push(x, y, z)
-        colors.push(99, 102, 241)
+        colors.push(r, g, b)
       }
     }
 

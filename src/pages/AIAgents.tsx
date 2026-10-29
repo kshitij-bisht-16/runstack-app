@@ -99,8 +99,8 @@ export default function AIAgents() {
                 </div>
 
                 {/* Action */}
-                <Button variant={agent.status === 'active' ? 'secondary' : 'primary'} fullWidth>
-                  {agent.status === 'active' ? 'Open Agent' : 'Activate'}
+                <Button variant={agent.status === 'active' ? 'secondary' : 'primary'} size="sm" fullWidth>
+                  {agent.status === 'active' ? 'Deactivate' : 'Activate'}
                 </Button>
               </div>
             </div>

@@ -164,7 +164,7 @@ export default function BrandContextDetail() {
                     {file.size}  ·  {file.date}
                   </div>
                 </div>
-                <Button variant="ghost" style={{ height: '36px', fontSize: '12px', padding: '0 14px' }}>Download</Button>
+                <Button variant="ghost" size="sm">Download</Button>
               </div>
             ))}
           </div>

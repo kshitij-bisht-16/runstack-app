@@ -59,7 +59,7 @@ export default function Dashboard() {
             Here's what's happening with your AI workforce
           </span>
         </div>
-        <Button>Add Agent</Button>
+        <Button size="sm">Add Agent</Button>
       </div>
 
       {/* Stat cards */}

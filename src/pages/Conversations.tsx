@@ -143,9 +143,9 @@ export default function Conversations() {
               </p>
               {!msg.isUser && (
                 <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
-                  <Button variant="primary">Approve All</Button>
-                  <Button variant="ghost">Edit Variants</Button>
-                  <Button variant="ghost">Regenerate</Button>
+                  <Button variant="primary" size="sm">Approve All</Button>
+                  <Button variant="ghost" size="sm">Edit Variants</Button>
+                  <Button variant="ghost" size="sm">Regenerate</Button>
                 </div>
               )}
               <span style={{ fontSize: '11px', color: '#3C3C3C', fontFamily: "'Sora', sans-serif" }}>
